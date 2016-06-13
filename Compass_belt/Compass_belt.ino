@@ -60,7 +60,10 @@ int headingToIndex(float heading){
 void calibrate(){
   /*Updates the calibration matrix one point at a time in the order
    * N, E, S, W, after which it wraps around to N again */
+  
   button_time = millis();
+  
+  //software debounce
   if (button_time - last_button_time > 250){
       calibrationMatrix[calMatrixRowPointer][0] = x;
       calibrationMatrix[calMatrixRowPointer][1] = y;
@@ -69,18 +72,19 @@ void calibrate(){
       last_button_time = button_time;
         if (calMatrixRowPointer >= 4){
           calMatrixRowPointer = 0;
+          //centerCalibratioMatrix();
           printCalibrationMatrix();
         }
     }
 }
 
 void getCompassData(){
-  //Tell the HMC what regist to begin writing data into
+  //Tell the HMC what registers to begin writing data into
   Wire.beginTransmission(addr);
   Wire.write(0x03); //start with register 3.
   Wire.endTransmission();
  
- //Read the data.. 2 bytes for each axis.. 6 total bytes
+ //Read the data, 2 bytes for each axis, 6 total bytes
   Wire.requestFrom(addr, 6);
   if (6<=Wire.available()) {
     x = Wire.read()<<8; //MSB  x 
@@ -93,6 +97,7 @@ void getCompassData(){
 }
 
 void printCalibrationMatrix(){
+  //Prints currnet calibration matrix to serial
   for (i=0; i<4; i++){
     for (j=0; j<3; j++){
       Serial.print(calibrationMatrix[i][j]);
@@ -110,7 +115,7 @@ void setup() {
     digitalWrite(i, LOW);
   }
   
-  //Add an interrupt fot the North calibration
+  //Add an interrupt fot the calibration button
   pinMode(calibrationInterruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(calibrationInterruptPin), calibrate, FALLING);
   
@@ -131,18 +136,20 @@ void setup() {
     
   Serial.begin(115200);
 
+  //turn on all motors momentarly to get feedback at reset/power up
   turnOnAllPins();
   delay(500);
-  
+
+  //Start talking to the magnetometer
   Wire.begin();
-  
   Wire.beginTransmission(addr); //start talking
-  Wire.write(0x00); // Set the Register
+  Wire.write(0x00); // Set the start register (0)
   //Write to configuration and mode registers
   Wire.write(configurationRegisterA); 
   Wire.write(configurationRegisterB);
   Wire.write(modeRegister);
   Wire.endTransmission();
+  
   Serial.println("Start");
 }
 
@@ -165,7 +172,8 @@ void loop() {
    
   // Convert radians to degrees for readability.
   //headingDegrees = heading * 180/PI; 
-  
+
+  //Make sure all motors ar off before turning on a new one
   turnOffAllPins();
   
   //int pinIndex = headingToIndex(heading);
