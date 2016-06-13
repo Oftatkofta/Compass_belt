@@ -1,0 +1,24 @@
+This directory contains the stuff for making the transparent letter grid
+mask that goes over the 8x8 LED matrix.
+
+The file grid is a plain text file showing the letter matrix used and
+describing what it displays and when.
+
+compass.svg is an Inkscape SVG (scalable vector graphics) document containing
+the letter grid, as a 20mm x 20mm square matrix of white letters on a dark
+background. It is based on the SVG from Daniel Rojas' "Micro-Word-Clock"
+project, here:
+
+   https://github.com/formatc1702/Micro-Word-Clock
+
+compass.eps is the letter grid exported from Inkscape as encapsulated
+Postscript.
+
+compass.tex is a LaTeX document that prints nine grids on an 8.5x11"
+page. It should be easy to modify for other media sizes. (Aside: I tried
+doing a print version in LibreOffice, but it rasterized badly and looked
+pixelated when printed. The LaTeX version seems to come out a lot better.)
+
+The Makefile has the following targets:
+	all -- build a printable compass.pdf from compass.eps and compass.tex
+	clean -- remove all the temporary files

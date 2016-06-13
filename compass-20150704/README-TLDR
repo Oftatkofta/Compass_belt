@@ -1,0 +1,15 @@
+DO NOT USE THIS COMPASS IN ANY SITUATION WHERE LIFE, SAFETY OR PROPERTY
+DEPEND ON THE OUTPUT.
+
+Free software; no warranty. See COPYING.
+
+The first time you power up, or if you later press the button, the compass
+will go through a calibration process:
+
+"FACE NORTH" -- Do that, then press the button.
+
+"TURN CW" -- Turn in a circle clockwise (to the right). Keep going until
+you see a heading displayed, or press the button to cancel.
+
+Once calibration is complete, the compass will remember the calibration
+settings (even if you turn off the power). Press button to re-calibrate.

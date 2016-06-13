@@ -1,0 +1,79 @@
+=== Bill of Materials ===
+
+   Adafruit Trinket (3.3V version)
+   https://www.adafruit.com/products/1500
+
+   HMC5883L 3-axis magnetometer breakout board
+   https://www.adafruit.com/products/1746
+
+   Adafruit Mini 8x8 LED Matrix w/I2C Backpack (Red)
+   https://www.adafruit.com/products/870
+
+   SPST normally-open pushbutton switch
+   https://www.adafruit.com/products/1489
+
+   printed word grid overlay for display
+   see overlay/ directory to print your own
+
+   Breadboard
+
+   Jumpers
+
+   Power Supply
+
+=== Wiring ===
+
+   Tie the ground pins of the Trinket, magnetometer and display together.
+
+   Tie the 3V3 regulated output of the Trinket to the Vcc of the display
+   and magnetometer.
+
+   Tie the Trinket I2C SDA (pin 0) to the SDA of the display and magentometer.
+
+   Tie the Trinket I2C SCL (pin 2) to the SCL of the display and magnetometer.
+
+   One side of the pushbutton goes to Trinket pin 1. The other side goes
+   to ground.
+
+   Power the Trinket via the USB input or BAT pin.
+
+=== Substitutions ===
+
+   Everything is 3V3 safe, so using a bare ATTiny85 is pretty easy provided
+   you have a way to power it with regulated 3.3VDC. (If you program via ISP
+   rather than USB, that will cut the parts count further.)
+
+   Other AVR chips are probably usable wiuth some code changes, though
+   you probably need more than 4KB of program memory. Nothing (other than
+   the bit-banging USB in the Trinket firmware) is especially timing-
+   sensitive, so internal clocks should be fine.
+
+   Any HMC5883L magnetometer breakout should work, even designs that aren't
+   5V safe. (The bare part is fine too, but read the data sheet carefully.
+   There are some fiddly requirements for the nearby copper layout. You'll
+   need a hot air station or a reflow oven for soldering.)
+
+   Adafruit sells a bunch of different 8x8 LED matrices with I2C controllers,
+   and any size or color should be a drop-in replacement (except for the
+   multi-color ones, and layouts other than 8x8).
+
+   Any other I2C display is a possibility, though you'll need to make some
+   code changes. (Even if you use a Holtek HT16K33 as a driver, it won't
+   be a drop-in replacement unless you map the LED positions in the exact
+   same way as the Adafruit board.)
+
+   An example minimal design BOM (with approximate single-unit prices):
+      ATTINY85V-15ST     processor         $4.23 (Digi-Key)
+      HMC5883L-TR        magnetometer      $3.30 (Digi-Key)
+      HT16K33            display driver    $2.27 (Tronixlabs)
+      KWM-30881CVB       8x8 LED matrix    $3.95 (Adafruit)
+      MIC5225-3.3YM5TR   voltage regulator $0.90 (Digi-Key)
+      T494B105K025AT     1.0uF cap         $0.84 (Digi-Key)
+      T494B225K020AT     2.2uF cap         $0.84 (Digi-Key)
+      2-layer custom PCB ~2 sq. in.        $10.00 (for 3; OSH Park)
+
+   (Then add a pushbutton, enclosure and power connection of your choice.)
+
+   Costs obviously drop dramatically as volumes go up. There are almost
+   certainly cheaper viable alternatives for all the parts except for the
+   processor and magnetometer.

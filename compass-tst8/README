@@ -1,0 +1,36 @@
+ WARNING: THIS CODE IS HIGHLY EXPERIMENTAL AND HAS NEVER BEEN TESTED IN THE
+FIELD. DO NOT ASSUME THE RESULTS ARE ACCURATE OR RELIABLE. DO NOT USE IN
+ANY SITUATION WHERE LIFE, SAFETY OR PROPERTY DEPEND ON THE OUTPUT.
+
+Copyright (c) 2014 Douglas Henke <dhenke@mythopoeic.org>
+This is free software -- see COPYING for details.
+
+This is an example program that shows an approach to calibrating a
+three-axis digital magnetometer, then using the calibration data to
+convert readings to compass headings. It uses fixed-point math, and is
+designed around the idea of allowing for a very small binary size when
+ported to the AVR.
+
+More detailed information about this example is availble online:
+   http://mythopoeic.org/magnetometer-v-fixed-point
+
+To build, run "make" as a normal user.
+
+To run, you'll need a Raspberry Pi with an HMC5883L magnetometer connected
+to the I2C bus. (The code should be easily adaptable to other platforms,
+though the hmc5883l.c module is somewhat specific to that sensor.)
+
+Start with your vehicle/platform/whatever facing georgraphic North, then
+launch the program. You will need to run it as root (or otherwise arrange
+for user-level access to the I2C bus).
+
+When instructed, turn the sensor slowly clockwise. (It helps if you have
+a stable platform like a turntable, lazy susan or swivel office chair.)
+
+Once you've made a full circle, you should see a stream of output like:
+
+xfrm: -0.002 -0.105 -0.004
+HDG: 181.791
+
+The heading is in degrees, measured clockwise from your reference North.
+The "xfrm" line shows the transformed X, Y and Z coordinates.

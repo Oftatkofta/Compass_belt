@@ -1,0 +1,19 @@
+This is the matrix8x8 library. It simplifies using the Adafruit 8x8 LED
+backpack with AVR microcontrollers with a USI interface, especially the
+ATTiny85 (as in the Adafruit Trinket).
+
+It depends on and uses the uWireM library for I2C communications.
+
+It's a lighter-weight (and less capable) alternative to the Adafruit
+LED Backback and Adafruit GFX libraries. It may be useful to people who
+prefer C to C++, need to save a few bytes, or both.
+
+For more information, see:
+
+   http://mythopoeic.org/adafruit-trinket-i2c
+
+All files except are free software created by dhenke@mythopoeic.org;
+see ../COPYING for details.
+
+Tested on Adafruit Trinket 3.3V with stock (8MHz) fuse settings with
+an Adafruit LED Backpack 0.8" 8x8 matrix.

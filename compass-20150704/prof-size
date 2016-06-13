@@ -1,0 +1,43 @@
+#!/usr/bin/perl -w
+#
+# prof-size -- profile a program for code size
+#
+# usage: ./prof-size map
+#
+# Reads a map file (as produced by the GCC option -Wl,--cref,-Map=map)
+# named on the command line (or from stdin). Writes an analysis of code
+# size by function (from largest to smallest) on stdout.
+#
+# Each output line shows the number of code bytes associated with a
+# function, then the percentage of the overall program size accounted
+# for by that function, then the function name.
+#
+# Example: 216 (7.1%) fxp_atan2
+#
+# That means the function fxp_atan2() comprises 216 bytes of instructions,
+# which are 7.1% of the program as a whole.
+#
+# Note that the total size shown by this tool will be slightly less than
+# the size of the .text section as shown by size(1). This is due to
+# system overhead like entry code, prologues, alignment and so on.
+#
+# This tool also considers only program instructions, not static data in
+# the .text section (like PROGMEM arrays for AVR).
+#
+$total = 0;
+while(<>) {
+   next unless /^\s+\.text\.\w/;
+   unless(/0x[0-9a-f]{16}/) { chomp; $_.=<>; }
+   next unless /^\s+\.text\.([\w\.]+)\s+0x[0-9a-f]{16}\s+0x([0-9a-f]+)\s/;
+   $sym = $1; $len = hex($2);
+   next if($len == 0);
+   if($sym eq "libgcc" && /libgcc\.a\((\w+)/) { $sym = $1; }
+   $len{$sym} = $len;
+   $total += $len;
+}
+
+foreach (sort { $len{$b} <=> $len{$a} }keys(%len)) {
+   $pct = sprintf("%.1f", $len{$_}*100.0/$total);
+   print $len{$_}." ($pct%) $_\n";
+}
+print "--- Total: $total\n";

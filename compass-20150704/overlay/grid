@@ -1,0 +1,23 @@
+<<<<>>>>
+TURNFACE
+EASTWEST
+RNORTHII
+RSOUTHNL
+CNORTHTT
+WSOUTHFH
+EASTWEST
+
+Displays:
+
+Normal display is compass direction, e.g. "WEST" or "NORTH NORTH EAST".
+
+When calibration is started: "FACE NORTH".
+
+During calibration: "TURN CW"
+
+Sensor or I2C problem: "ERR"
+
+Transformed reading has Z component too far from zero: "TILT"
+
+Transformed reading is too far from unit circle or sensor is
+saturated: "INTF"

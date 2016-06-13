@@ -1,0 +1,37 @@
+This is the uWireM library. It provides a compact and easy way to use
+AVR microcontrollers with a USI (universal serial interface) such as the
+ATTiny85 as an I2C master.
+
+It's a lighter-weight alternative to BroHogan's TinyWireM library for
+people who prefer C to C++, need to save a few bytes, or both.
+
+There's no actual code (beyond the USI_TWI_Master.c stuff) -- it's just
+a very thin layer of preprocessor macros.
+
+For more information, see:
+
+   http://mythopoeic.org/adafruit-trinket-i2c
+
+All files except for USI_TWI_Master.[ch] are free software created by
+dhenke@mythopoeic.org -- see ../COPYING for details.
+
+The USI_TWI_Master.[ch] files are provided by Atmel; I did not write them.
+See their application note AVR310: Using the USI Module as a I2C Master:
+
+http://www.atmel.com/images/atmel-2561-using-the-usi-module-as-a-i2c-master_ap-note_avr310.pdf
+
+and the related download package:
+
+http://www.atmel.com/images/Atmel-2561-Using-the-USI-Module-as-a-I2C-Master_AP-Note_AVR310.zip
+
+I have made the following (minor) changes to USI_TWI_Master.h:
+
+   1) Commented out TWI_FAST_MODE in order to use 100KHz I2C rather
+      than 400KHz. Rationale: The default should be to favor reliability
+      and universal compatibility over speed. Applications that need the
+      extra speed can put it back easily enough.
+
+   2) Calculate SYS_CLK from F_CPU at compile time rather than assuming
+      a fixed 4MHz.
+
+Tested on Adafruit Trinket 3.3V with stock (8MHz) fuse settings.

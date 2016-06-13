@@ -1,0 +1,11 @@
+This is a small library for communicating with an HMC5883L magnetometer
+from an AVR microcontroller, using the ../uWireM/ library for I2C
+communications.
+
+This is free software; see ../COPYING for details.
+
+Note that this library does not yet perform temperature compensation. That
+needs to be fixed before it is suitable for most serious uses.
+
+Also note that the dependency on ../fixedpt.h is infelicitous and really
+not needed; we're really just returning three 16-bit signed values.

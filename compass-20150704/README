@@ -1,0 +1,160 @@
+WARNING: THIS CODE IS HIGHLY EXPERIMENTAL AND HAS NOT BEEN PROVEN CORRECT
+OR EVEN THOROUGHLY TESTED. DO NOT ASSUME THE RESULTS ARE ACCURATE OR RELIABLE.
+DO NOT USE IN ANY SITUATION WHERE LIFE, SAFETY OR PROPERTY DEPEND ON THE OUTPUT.
+
+This is free software. See COPYING for details.
+
+This program is an example of how to make a working compass using an
+ATtiny85 (such as on the Adafruit Trinket), an HMC5883L magnetometer
+and an Adafruit 8x8 LED backpack for display.
+
+==== Additional Information ====
+
+More details can be found here:
+
+   http://mythopoeic.org/magnetometer-vii-proto/
+
+The above link leads to an article which is part of a larger series
+about the development of this project. For a list of all the articles,
+look here:
+
+   http://mythopoeic.org/tech/avr-compass/
+
+==== Compilation and Installation ====
+
+To build, run "make" as a normal user.
+
+To flash on an AVR Trinket with the default bootloader, press the
+reset toggle on the Trinket and run "make program" while the status
+LED is slowly flashing.
+
+To get size profiling information showing how big the generated code
+is for each function, run "make sizeprof".
+
+==== Usage ====
+
+Power-up:
+
+The Adafruit Trinket always runs the bootloader at power-up. It takes a few
+seconds for it to figure out that there is no USB device connected, during
+which time the display will remain dark. Don't conclude your compass is
+faulty if it doesn't light up the instant you apply power; this is normal
+and expected, a consequence of the platform firmware. (The power-up delay
+is about 3s if you're supplying power via the BAT pin on the Trinket. It
+is about 12s if you're using an actual USB port -- not just a charger --
+via the USB port on the Trinket.)
+
+Calibration:
+
+The compass requires a calibration process so it can know how to translate
+magnetic field readings into compass directions.
+
+When power is applied to a freshly-flashed device, or if you press the
+button during normal operation, the calibration process will begin.
+
+When calibration begins, the display shows the text "FACE NORTH". Turn
+so you are facing North, then press the button again. The display will
+change to show the text "TURN CW". Turn in a clockwise circle (i.e., to
+the right). Speed is not critical, so long as you keep turning clockwise.
+
+If calibration is successful, the calibration data will be saved to
+non-volatile memory (so it will persist even if you turn off the power).
+The display will show your current heading in words, for example:
+"NORTH NORTH EAST".
+
+If calibration fails, the display will flash "ERR" (and the calibration
+data will not be saved). Press the button to start the calibration process
+again.
+
+The calibration process can be cancelled at any time when "TURN CW" is
+showing; simply press the button. When calibration is cancelled, the
+compass returns to using the previously-saved set of calibration data.
+(Exception: If you cancel the very first calibration, there is no
+previously-saved data. The display will flash "ERR" and you must start
+a new calibration process.)
+
+General Use:
+
+During normal use, the display will show the current heading in words.
+
+If the display shows "TILT" that means the magnetic field is coming from
+a direction too far from the plane of rotation established during calibration.
+If your vehicle is going up or down a very steep slope, you may see this
+indication. It will go away on its own when you return to level ground.
+Otherwise, check the mounting of your compass -- has it changed orientation?
+Check for nearby sources of interference. Try re-calibrating.
+
+If the display shows "INTF" that means that interference (a strong nearby
+magnetic field that was not present during calibration) has been detected.
+Check for and remove nearby sources of interference. Once the interference
+has been resolved, it is probably a good idea to re-calibrate.
+
+WARNING: Depending on the direction and strength of the interfering field,
+the compass may not be able to distinguish the interference from the Earth's
+magnetic field. In such cases, it will display a false reading rather than
+the INTF indication.
+
+If the strength and direction of the magnetic field are both weird, then
+you may see both "TILT" and "INTF" displayed. Resolution and caveats apply
+as noted above for "INTF".
+
+If the display shows a steady "ERR" indication, that means the magnetic field
+sensor is not responding as expected. This means there is a problem with
+the compass hardware. (Do not confuse this with a flashing "ERR" indication,
+which appears if a calibration attempt fails.)
+
+Top Row Indicators: (FIXME: this feature is not yet implemented!)
+
+The top row of lamps on the display are meant as a visual indication of
+fine variations in heading. If you see a symbol like <> in the top center,
+that means your heading is exactly that shown in words below (to within
+the limits of precision of the compass).
+
+If you see a symbol like > to the right of center, that means the heading
+shown in words is to the right of your actual heading. The further from the
+center the > appears, the further you are from the text heading.
+
+Likewise, a < symbol to the left of center means the text heading is left
+of your actual heading.
+
+Lamp Check:
+
+When you press the button to begin calibration, all lamps on the display
+will light while you hold down the button. This is an intentional feature,
+meant to allow you to check for any failed LEDs in the display.
+
+==== When Calibration is Needed ====
+
+The compass should be (re-)calibrated if any of the following apply:
+
+o- at the time of initial installation
+
+o- if any new equipment is installed in the vehicle in which the compass
+   is mounted
+
+o- if a substantial cargo is loaded into or removed from the vehicle
+
+o- if the vehicle travels to a location which has a significantly different
+   magnetic declination than the location where the last calibration was
+   performed
+
+o- if the position or orientation of the compass mounting is changed in
+   any way
+
+o- if the INTF indicator displays at any point (even if the interference
+   source is found and removed, and the INTF indicator then disappears)
+
+o- if the TILT indicator displays when the vehicle is on ground which is
+   level or nearly so
+
+o- if the compass firmware is re-flashed
+
+o- if you know or suspect that the compass is not showing a correct heading
+
+o- if it has been more than one year since the previous calibration
+
+==== Final Warning ====
+
+I can't emphasize enough: This is a building block and a tech demo, not
+a serious navigational aid. Do not use this as your sole source of
+direction finding on your next sea voyage or wilderness trek.

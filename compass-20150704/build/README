@@ -1,0 +1,30 @@
+This directory contains the schematic for the compass demo. The files are:
+
+  README -- what you're reading now
+  README-BUILD -- notes about building the circuit, including a bill of
+     materials and information on substituting parts
+
+  breadboard.jpg -- picture of my breadboard version (note nearly-invisible
+     white wire from d7 to d16)
+
+  compass.pdf -- schematic as a PDF document
+  compass.png -- schematic as a bitmap
+
+  compass.sch -- save file for "gschem" program (part of gEDA)
+
+  HMC5883L-breakout-1.sym -- custom gschem symbols for parts
+  matrix8x8-1.sym
+  trinket-1.sym
+
+  gafrc -- config file to tell gschem where to find custom symbols
+
+Hopefully you know what to do with the PDF document and PNG image.
+
+To load the schematic in the "gschem" interactive editor, run the
+following command in this directory:
+
+   gschem compass.sch
+
+If you don't have gschem installed, you can get it on Debian-like things
+by doing a "sudo apt-get install geda". (There are versions for other
+platforms too; Google is helpful if you need those.)

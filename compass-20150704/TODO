@@ -1,0 +1,43 @@
+More testing, including under conditions of actual use.
+
+The "TILT" indication sometimes doesn't show up when it should. The
+"INTF" indication sometimes shows up when it shouldn't.
+
+Use the top row of the display to show fine offset from the displayed
+principal wind.
+
+=================== stuff below here is done =====================
+
+Does Trinket bootloader wait for USB when power is supplied via BAT input?
+If so, figure out a way to speed up boot. -- It waits, but only for about
+3s (instead of ~12s). That's probably OK for now.
+
+Display TILT indication if the current (transformed) reading is too far
+from the Z=0 plane. -- Done.
+
+Display INTF indication if the current (transformed) reading is too far
+from the unit circle. -- Done.
+
+Implement temperature compensation (using the built-in HMC5883L
+features). -- Done.
+
+Implement HMC5883L self-test; display ERR indication if failed. -- Done.
+
+Display ERR indication if the magnetometer is unreadable. -- Done.
+
+Display INTF indication if any axis is saturated. -- Done.
+
+Improve display. The font -- if you can call it that -- looks awful and is 
+inconsistent. -- Now using word-style display inspired by Daniel Rojas'
+tiny word clock.
+
+Now stores calibration data in EEPROM.
+
+Calibrate when requested via input pin. -- Done.
+
+Allow user to cancel calibration in progress and return to previously-saved 
+values. -- Done.
+
+When reading is right on the border between two points, noise causes the
+display to flicker between the two readings on either side of the border.
+Add damping / hysteresis to prevent this. -- Added hysteresis.
