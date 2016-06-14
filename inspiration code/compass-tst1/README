@@ -1,0 +1,37 @@
+This is an example program intended to demonstrate an approach to
+calibrating a magnetometer so we can transform the readings to compass
+headings.
+
+This is free software. See COPYING for details.
+
+To build, run "make" as a normal user.
+
+You will need an input file containing raw magnetometer data. The file
+format is one reading per line. Each line consists of three numbers,
+seperated by spaces, with a bare newline at the end of the line. The
+numbers are signed ASCII floating-point values, in gauss. The input file
+must be called "circle" and be in the current working directory.
+
+Example data is available here:
+
+   http://mythopoeic.org/misc-files/circle
+
+A program to obtain live data in the required format from an HMC5883L
+magnetometer is here:
+
+   http://mythopoeic.org/source-download/compass-read.tar.gz
+
+To run, launch (again as a normal user) with no arguments:
+
+   ./tst
+
+The program will analyze the data, and report results to stderr. A
+full description of the process is here:
+
+   http://mythopoeic.org/magnetometer-real-data/
+
+Note that you can uncomment dataset_dump() in tst.c to write out the
+transformed data set to stdout (if, for example, you wish to graph it
+with gnuplot).
+
+Contact the author: dhenke@mythopoeic.org
