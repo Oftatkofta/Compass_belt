@@ -14,12 +14,30 @@ distance fuction sqrt(Xa*Xb+Ya*Yb+Za*Zb)
 rotation function, matrix multiplyer
 rotation finder: 
  */
-
-
-void centerCalibrationMatrix(){
-  float mean_x, mean_y, mean_z;
-  mean_x = calibrationMatrix[0];
+void testInCircle(){
+  digitalWrite(pinArray[test], HIGH);
+  test++;
+  if (test >8){
+    test = 0;
+  }
 }
+
+int averageCoordinate(volatile int (*calArray)[3], int idx){
+  /*
+   * *ptr is a decayed pointer to the calibrationMatrix array
+   * idx is the index for the coordinate to average x=0, y=1, z=2
+  */
+  int n, e, s, w;
+  float avg;
+  int row_idx = 0;
+  n = calArray[0][idx];
+  e = calArray[1][idx];
+  s = calArray[2][idx];
+  w = calArray[3][idx];
+
+  avg = round((n+e+s+w)/(float)4);
+  return (int)avg;
+  }
 
 float findPhi_z(int x, int y){
   float phi = -atan(-(float)x/(float)y);

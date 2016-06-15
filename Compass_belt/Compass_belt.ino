@@ -21,13 +21,17 @@ int x,y,z; //triple axis data
 const float declinationAngle = 0.05; // about +2.75E for Oslo, in radians
 float heading = 0;
 float headingDegrees = 0;
-//volatile float calibration = 0;
+
 volatile int calibrationMatrix[4][3] = {
                               {0, 0, 0}, //N: {x,y,z}
                               {0, 0, 0}, //E: {x,y,z}
                               {0, 0, 0}, //S: {x,y,z}
-                              {0, 0, 0} //W: {x,y,z}
+                              {0, 0, 0}, //W: {x,y,z}
                               };
+volatile int avg_X = 0;
+volatile int avg_Y = 0;
+volatile int avg_Z = 0;
+
 volatile int calMatrixRowPointer = 0;
 unsigned long button_time = 0;
 unsigned long last_button_time = 0;
@@ -72,8 +76,12 @@ void calibrate(){
       last_button_time = button_time;
         if (calMatrixRowPointer >= 4){
           calMatrixRowPointer = 0;
-          //centerCalibratioMatrix();
           printCalibrationMatrix();
+          //N average
+          avg_X = averageCoordinate(calibrationMatrix, 0);
+          avg_Y = averageCoordinate(calibrationMatrix, 1);
+          avg_Z = averageCoordinate(calibrationMatrix, 2);
+          printAverages();
         }
     }
 }
@@ -105,7 +113,17 @@ void printCalibrationMatrix(){
     }
     Serial.println();
   }
-  //Serial.println();
+  Serial.println();
+}
+
+void printAverages(){
+  Serial.println("Averages:");
+  Serial.print(avg_X);
+  Serial.print("\t");
+  Serial.print(avg_Y);
+  Serial.print("\t");
+  Serial.println(avg_Z);
+  Serial.println();
 }
 
 void setup() {
@@ -155,7 +173,7 @@ void setup() {
 
 void loop() {
 
-  //getCompassData();
+  getCompassData();
   
   //heading = atan2(y, x); //Y-axis of magnetometer is pointing up
   
@@ -177,12 +195,7 @@ void loop() {
   turnOffAllPins();
   
   //int pinIndex = headingToIndex(heading);
-  
-  digitalWrite(pinArray[test], HIGH);
-  test++;
-  if (test >8){
-    test = 0;
-  }
+ 
   //Serial.print("x: ");
   //Serial.print(x);
   //Serial.print("\t");
@@ -197,6 +210,6 @@ void loop() {
   //Serial.print(pinIndex);
   //Serial.print("\t");
   //Serial.println(headingDegrees);
-  delay(200);
+  delay(500);
   
 }
