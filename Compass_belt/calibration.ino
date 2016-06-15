@@ -15,10 +15,12 @@ rotation function, matrix multiplyer
 rotation finder: 
  */
 void testInCircle(){
+  //trigger motors, one at a time in a circle for testing
   digitalWrite(pinArray[test], HIGH);
   test++;
   if (test >8){
     test = 0;
+  delay(300);
   }
 }
 

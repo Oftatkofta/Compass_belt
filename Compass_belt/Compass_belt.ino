@@ -28,9 +28,12 @@ volatile int calibrationMatrix[4][3] = {
                               {0, 0, 0}, //S: {x,y,z}
                               {0, 0, 0}, //W: {x,y,z}
                               };
-volatile int avg_X = 0;
-volatile int avg_Y = 0;
-volatile int avg_Z = 0;
+volatile int avg_X = 0; //Average x-coordinate in calibrationMatri
+volatile int avg_Y = 0; //Average y-coordinate in calibrationMatri
+volatile int avg_Z = 0; //Average z-coordinate in calibrationMatri
+
+volatile int N_cal[3] = {0, 0, 0}; // North point used to get rotationMatrix
+volatile int E_cal[3] = {0, 0, 0}; // East point used to get rotationMatrix
 
 volatile int calMatrixRowPointer = 0;
 unsigned long button_time = 0;
@@ -63,7 +66,9 @@ int headingToIndex(float heading){
 
 void calibrate(){
   /*Updates the calibration matrix one point at a time in the order
-   * N, E, S, W, after which it wraps around to N again */
+   * N, E, S, W, after which it wraps around to N again and calculates the
+   * averages of the xyz coorinates for the points.
+   */
   
   button_time = millis();
   
@@ -77,17 +82,18 @@ void calibrate(){
         if (calMatrixRowPointer >= 4){
           calMatrixRowPointer = 0;
           printCalibrationMatrix();
-          //N average
+          //Calculate the average xyz coorinates
           avg_X = averageCoordinate(calibrationMatrix, 0);
           avg_Y = averageCoordinate(calibrationMatrix, 1);
           avg_Z = averageCoordinate(calibrationMatrix, 2);
+          //print average coordinates
           printAverages();
         }
     }
 }
 
 void getCompassData(){
-  //Tell the HMC what registers to begin writing data into
+
   Wire.beginTransmission(addr);
   Wire.write(0x03); //start with register 3.
   Wire.endTransmission();
@@ -117,6 +123,7 @@ void printCalibrationMatrix(){
 }
 
 void printAverages(){
+  //Prints the currently used coordinate averages to serial
   Serial.println("Averages:");
   Serial.print(avg_X);
   Serial.print("\t");
