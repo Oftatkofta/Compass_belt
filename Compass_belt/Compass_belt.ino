@@ -72,22 +72,35 @@ void calibrate(){
   
   button_time = millis();
   
-  //software debounce
+  //software debounce, only listen every 250 ms
   if (button_time - last_button_time > 250){
+    //Fill the calibration matrix with the current xyz coordinates
       calibrationMatrix[calMatrixRowPointer][0] = x;
       calibrationMatrix[calMatrixRowPointer][1] = y;
       calibrationMatrix[calMatrixRowPointer][2] = z;
+      //increment the row "pointer"
       calMatrixRowPointer++;
       last_button_time = button_time;
         if (calMatrixRowPointer >= 4){
           calMatrixRowPointer = 0;
+          
           printCalibrationMatrix();
+          
           //Calculate the average xyz coorinates
           avg_X = averageCoordinate(calibrationMatrix, 0);
           avg_Y = averageCoordinate(calibrationMatrix, 1);
           avg_Z = averageCoordinate(calibrationMatrix, 2);
-          //print average coordinates
+          
+          //print average coordinates to serial
           printAverages();
+          
+          N_cal = {calibrationMatrix[0][0]-avg_X,
+                  calibrationMatrix[0][1]-avg_Y,
+                  calibrationMatrix[0][2]-avg_Z};
+
+          E_cal = {calibrationMatrix[1][0]-avg_X,
+                  calibrationMatrix[2][1]-avg_Y,
+                  calibrationMatrix[3][2]-avg_Z};
         }
     }
 }

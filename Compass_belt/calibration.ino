@@ -50,7 +50,7 @@ float findPhi_z(int x, int y){
 }
 
 float findPhi_x(int z, int y){
-  float phi = -atan((float)z/(float)y);
+  float phi = -atan(-(float)z/(float)y);
   if (y*cos(phi) - z*sin(phi) < 0){
     phi += PI;  
   }
